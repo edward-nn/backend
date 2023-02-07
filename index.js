@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 
 var morgan = require('morgan')
 
@@ -10,6 +11,7 @@ morgan.token('id', function getId (req) {
 
 app.use(assignId)
 
+app.use(cors())
 app.use(express.json())
 
 morgan.token('body', req => {
@@ -17,6 +19,8 @@ morgan.token('body', req => {
 })
 
 app.use(morgan(' :method :url :status :res[content-length] - :response-time ms :body'))
+
+app.use(express.static('build'))
 
 function assignId (req, res, next) {
     req.id = generateId()
@@ -49,10 +53,12 @@ let persons = [
     }
 ]
 
-const generateId = () => {
-  const id = Math.floor(Math.random() * 1000000);
-  return id;
-}
+ const generateId = () => {
+    const maxId = persons.length > 0
+      ? Math.max(...persons.map(n => n.id))
+      : 0
+    return maxId + 1
+  }
 
 app.get('/api/persons', (request, response) => {
     //console.log(request.headers)
@@ -90,9 +96,9 @@ app.post('/api/persons', (request, response) => {
 
 
   //body = (...body, )
-  const id = generateId()
+  //const id = generateId()
   const person = {
-    id: id,
+    id: generateId(),
     name: body.name,
     number: body.number || false,
   }
@@ -135,7 +141,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
