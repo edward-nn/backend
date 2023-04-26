@@ -1,0 +1,24 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+ 
+{   
+    "name": "Anna",
+    "number": "39-44-00000000"
+
+}
+###
+GET http://localhost:3001/api/persons/2
+###
+
+###
+GET http://localhost:3001/api/persons
+###
+
+PUT  http://localhost:3001/api/persons/63eab17c019ab6904fab6f72
+Content-Type: application/json
+ 
+{   
+    "name": "Marry Poppendieck",
+    "number": "39-44-0000000"
+
+}
