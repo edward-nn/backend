@@ -5,7 +5,7 @@ mongoose.set('strictQuery', false)
 
 const url = process.env.MONGODB_URI
 
-//console.log('connecting to', url)
+console.log('connecting to', url)
 
 mongoose.connect(url)
   // eslint-disable-next-line no-unused-vars
